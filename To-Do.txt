@@ -1,0 +1,36 @@
+Horos MPR fusion fork TODO
+==========================
+
+SPECT SUV investigation
+-----------------------
+
+- Keep the existing PET SUV path strict. Current Horos SUV enablement depends on
+  DCMPix.hasSUV, which expects PET-style DICOM metadata such as Units
+  (0054,1001) = BQML/CNTS and DecayCorrection (0054,1102).
+- The tested GE SPECT/NM studies do not include Units (0054,1001) or
+  DecayCorrection (0054,1102), so Horos correctly greys out SUVbw under the
+  current logic.
+- Confirm whether the GE SPECT pixel values are counts, counts/ml, vendor-scaled
+  activity concentration, or something else. Injected activity and patient
+  weight alone are not enough for SUV.
+- Compare one representative GE SPECT study against the original GE workstation
+  SUV/quantification result. Use this to determine whether stored pixels plus
+  GE private metadata can reproduce the workstation value.
+- Investigate GE private GEMS_GENIE_1 tags. In the DRAGOMIR study,
+  (0011,1057) contained values around 565.51168, which may be a scaling or
+  correction value, but it must not be trusted without validation.
+- If validation is successful, add an experimental SPECT SUV mode separate from
+  PET SUV:
+  - enable only for NM/SPECT studies after explicit user confirmation;
+  - allow manual injected activity entry in the local clinical unit workflow
+    (mCi/uCi/Ci), converting internally as needed;
+  - require or derive isotope half-life, injection time, acquisition time,
+    patient weight, height, and sex where relevant;
+  - show clearly that the mode is experimental/vendor-calibrated.
+
+Crash fix follow-up
+-------------------
+
+- Keep monitoring 3D MPR PET/SPECT fusion on Apple Silicon and Intel.
+- Toolbar readability is acceptable but not visually identical to the original
+  Horos distribution; revisit only after the clinical workflow is stable.
