@@ -53,6 +53,9 @@ openjpeg_include="$openjpeg_install/include/openjpeg-2.5"
 if [ ! -d "$openjpeg_include" ]; then
     openjpeg_include="$openjpeg_install/include/openjpeg-2.3"
 fi
+if [ ! -d "$openjpeg_include" ]; then
+    openjpeg_include="$openjpeg_install/include/OpenJPEG"
+fi
 args+=(-DOPENJPEG_LIBRARIES="$openjpeg_install/lib/libopenjp2.a")
 args+=(-DOPENJPEG_INCLUDE_DIRS="$openjpeg_include")
 
@@ -78,7 +81,11 @@ if [ ! -z "$CLANG_CXX_LIBRARY" ] && [ "$CLANG_CXX_LIBRARY" != 'compiler-default'
 fi
 
 if [ ! -z "$CLANG_CXX_LANGUAGE_STANDARD" ]; then
-    cxxfs+=(-std="$CLANG_CXX_LANGUAGE_STANDARD")
+    cxxstd="$CLANG_CXX_LANGUAGE_STANDARD"
+    if [ "$cxxstd" = "c++0x" ]; then
+        cxxstd="c++11"
+    fi
+    cxxfs+=(-std="$cxxstd")
 fi
 
 if [ ${#cfs[@]} -ne 0 ]; then

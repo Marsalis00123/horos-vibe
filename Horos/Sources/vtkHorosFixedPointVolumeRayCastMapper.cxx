@@ -121,7 +121,10 @@ void vtkHorosFixedPointVolumeRayCastMapper::Render( vtkRenderer *ren, vtkVolume 
     return;
     }
 
-  this->DisplayRenderedImage( ren, vol );
+  if ( ren->GetDraw() )
+    {
+    this->DisplayRenderedImage( ren, vol );
+    }
 
   this->Timer->StopTimer();
   this->TimeToDraw = this->Timer->GetElapsedTime();

@@ -39,6 +39,39 @@
 #import "ViewerController.h"
 #import "ToolbarPanel.h"
 #import "NSWindow+N2.h"
+#import <objc/runtime.h>
+
+static NSImage* HorosToolbarSizedImage(NSImage *image)
+{
+    if (image == nil)
+        return nil;
+
+    NSSize imageSize = [image size];
+    if (imageSize.width <= 40 && imageSize.height <= 40)
+        return image;
+
+    NSImage *toolbarImage = [image copy];
+    [toolbarImage setSize:NSMakeSize(32, 32)];
+    return [toolbarImage autorelease];
+}
+
+@implementation NSToolbarItem (HorosToolbarImageSizing)
+
++ (void)load
+{
+    Method originalMethod = class_getInstanceMethod(self, @selector(setImage:));
+    Method replacementMethod = class_getInstanceMethod(self, @selector(horos_setImage:));
+
+    if (originalMethod && replacementMethod)
+        method_exchangeImplementations(originalMethod, replacementMethod);
+}
+
+- (void)horos_setImage:(NSImage *)image
+{
+    [self horos_setImage:HorosToolbarSizedImage(image)];
+}
+
+@end
 
 @implementation OsiriXToolbar
 

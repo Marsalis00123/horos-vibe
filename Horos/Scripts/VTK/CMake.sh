@@ -36,6 +36,7 @@ mkdir -p "$cmake_dir"; cd "$cmake_dir"
 
 args=("$PROJECT_DIR/$TARGET_NAME") # -G Xcode
 cxxfs=( -w -fvisibility=default )
+ldfs=($OTHER_LDFLAGS)
 args+=(-DVTK_USE_X:BOOL=OFF)
 args+=(-DVTK_USE_COCOA:BOOL=ON)
 #args+=(-DVTK_USE_64BITS_IDS=ON) 
@@ -50,6 +51,21 @@ args+=(-DCMAKE_OSX_ARCHITECTURES="$ARCHS")
 args+=(-DVTK_USE_SYSTEM_ZLIB:BOOL=ON)
 args+=(-DVTK_USE_SYSTEM_EXPAT=ON)
 args+=(-DVTK_USE_SYSTEM_LIBXML2=ON)
+args+=(-DVTK_USE_SYSTEM_PNG=ON)
+args+=(-DVTK_USE_SYSTEM_TIFF=ON)
+args+=(-DCMAKE_PREFIX_PATH="/opt/homebrew")
+args+=(-DCMAKE_LIBRARY_PATH="/opt/homebrew/lib")
+args+=(-DCMAKE_INCLUDE_PATH="/opt/homebrew/include")
+if [ -f "/opt/homebrew/opt/libtiff/lib/libtiff.dylib" ]; then
+    args+=(-DTIFF_LIBRARY="/opt/homebrew/opt/libtiff/lib/libtiff.dylib")
+    args+=(-DTIFF_INCLUDE_DIR="/opt/homebrew/opt/libtiff/include")
+elif [ -f "/opt/homebrew/lib/libtiff.dylib" ]; then
+    args+=(-DTIFF_LIBRARY="/opt/homebrew/lib/libtiff.dylib")
+    args+=(-DTIFF_INCLUDE_DIR="/opt/homebrew/include")
+fi
+if [ -d "/opt/homebrew/lib" ]; then
+    ldfs+=(-L/opt/homebrew/lib)
+fi
 
 # args+=(-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON)
 
@@ -98,6 +114,11 @@ cxxfs+=( -std=c++11 )
 if [ ${#cxxfs[@]} -ne 0 ]; then
     cxxfss="${cxxfs[@]}"
     args+=(-DCMAKE_CXX_FLAGS="$cxxfss")
+fi
+if [ ${#ldfs[@]} -ne 0 ]; then
+    ldfss="${ldfs[@]}"
+    args+=(-DCMAKE_SHARED_LINKER_FLAGS="$ldfss")
+    args+=(-DCMAKE_EXE_LINKER_FLAGS="$ldfss")
 fi
 
 # Force a modern C++ standard for VTK/eigen compatibility

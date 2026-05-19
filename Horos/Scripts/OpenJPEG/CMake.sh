@@ -39,6 +39,7 @@ export CXX=clang
 args=("$source_dir")
 cfs=($OTHER_CFLAGS)
 cxxfs=($OTHER_CPLUSPLUSFLAGS)
+ldfs=($OTHER_LDFLAGS)
 
 args+=(-DCMAKE_OSX_DEPLOYMENT_TARGET="$MACOSX_DEPLOYMENT_TARGET")
 args+=(-DCMAKE_OSX_ARCHITECTURES="$ARCHS")
@@ -51,12 +52,16 @@ args+=(-DBUILD_DOC=OFF)
 args+=(-DBUILD_SHARED_LIBS=OFF)
 args+=(-DBUILD_STATIC_LIBS=ON)
 args+=(-DBUILD_TESTING=OFF)
-args+=(-DBUILD_THIRDPARTY=ON)
+args+=(-DBUILD_THIRDPARTY=OFF)
 args+=(-DCMAKE_POLICY_VERSION_MINIMUM=3.5)
+cfs+=(-Dfdopen=fdopen)
 
 args+=(-DCMAKE_PREFIX_PATH="/opt/homebrew")
 args+=(-DCMAKE_LIBRARY_PATH="/opt/homebrew/lib")
 args+=(-DCMAKE_INCLUDE_PATH="/opt/homebrew/include")
+if [ -d "/opt/homebrew/lib" ]; then
+    ldfs+=(-L/opt/homebrew/lib)
+fi
 
 # Prefer explicit TIFF paths if available (brew can install in opt prefix)
 if [ -f "/opt/homebrew/lib/libtiff.dylib" ]; then
@@ -80,7 +85,11 @@ if [ ! -z "$CLANG_CXX_LIBRARY" ] && [ "$CLANG_CXX_LIBRARY" != 'compiler-default'
 fi
 
 if [ ! -z "$CLANG_CXX_LANGUAGE_STANDARD" ]; then
-    cxxfs+=(-std="$CLANG_CXX_LANGUAGE_STANDARD")
+    cxxstd="$CLANG_CXX_LANGUAGE_STANDARD"
+    if [ "$cxxstd" = "c++0x" ]; then
+        cxxstd="c++11"
+    fi
+    cxxfs+=(-std="$cxxstd")
 fi
 
 if [ ${#cfs[@]} -ne 0 ]; then
@@ -90,6 +99,11 @@ fi
 if [ ${#cxxfs[@]} -ne 0 ]; then
     cxxfss="${cxxfs[@]}"
     args+=(-DCMAKE_CXX_FLAGS="$cxxfss")
+fi
+if [ ${#ldfs[@]} -ne 0 ]; then
+    ldfss="${ldfs[@]}"
+    args+=(-DCMAKE_SHARED_LINKER_FLAGS="$ldfss")
+    args+=(-DCMAKE_EXE_LINKER_FLAGS="$ldfss")
 fi
 
 cd "$cmake_dir"

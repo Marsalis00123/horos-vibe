@@ -41,6 +41,9 @@ args+=(-Wno-dev)
 args+=(-DCMAKE_OSX_DEPLOYMENT_TARGET="$MACOSX_DEPLOYMENT_TARGET")
 args+=(-DCMAKE_OSX_ARCHITECTURES="$ARCHS")
 args+=(-DDCMTK_ENABLE_MANPAGES=OFF)
+args+=(-DDCMTK_ENABLE_CXX11=ON)
+args+=(-DCMAKE_CXX_STANDARD=11)
+args+=(-DCMAKE_CXX_STANDARD_REQUIRED=ON)
 
 args+=(-DCMAKE_INSTALL_PREFIX="$install_dir")
 
@@ -55,6 +58,7 @@ if [ "$CONFIGURATION" = 'Debug' ]; then
 else
     cxxfs+=( -O2 )
 fi
+cxxfs+=( -std=c++11 )
 
 if [ ${#cfs[@]} -ne 0 ]; then
     cfss="${cfs[@]}"

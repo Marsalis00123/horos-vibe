@@ -5,6 +5,8 @@
 *~.nib
 DerivedData/
 build/
+dist/
+Horos-patched.app/
 *.pbxuser
 *.mode1v3
 *.mode2v3

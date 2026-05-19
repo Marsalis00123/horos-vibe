@@ -13341,6 +13341,9 @@
 					"-lGDCM",
 					"-lITK",
 					"-lVTK",
+					/opt/homebrew/opt/zstd/lib/libzstd.a,
+					/opt/homebrew/opt/jpeg-turbo/lib/libjpeg.a,
+					/opt/homebrew/opt/xz/lib/liblzma.a,
 					"-lopenjp2",
 					"-lCharLS",
 					"-framework",
@@ -13359,6 +13362,7 @@
 					$CONFIGURATION_TEMP_DIR/CharLS.build/Install/include,
 					$CONFIGURATION_TEMP_DIR/ITK.build/Install/include,
 					$CONFIGURATION_TEMP_DIR/VTK.build/Install/include,
+					/opt/homebrew/opt/libtiff/include,
 				);
 				USER_HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -13746,6 +13750,9 @@
 					"-lGDCM",
 					"-lITK",
 					"-lVTK",
+					/opt/homebrew/opt/zstd/lib/libzstd.a,
+					/opt/homebrew/opt/jpeg-turbo/lib/libjpeg.a,
+					/opt/homebrew/opt/xz/lib/liblzma.a,
 					"-lopenjp2",
 					"-lCharLS",
 					"-framework",
@@ -13765,6 +13772,7 @@
 					$CONFIGURATION_TEMP_DIR/CharLS.build/Install/include,
 					$CONFIGURATION_TEMP_DIR/ITK.build/Install/include,
 					$CONFIGURATION_TEMP_DIR/VTK.build/Install/include,
+					/opt/homebrew/opt/libtiff/include,
 				);
 				USER_HEADER_SEARCH_PATHS = (
 					"$(inherited)",

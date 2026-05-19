@@ -55,8 +55,10 @@ args+=(-DBUILD_EXAMPLES=OFF)
 args+=(-DBUILD_SHARED_LIBS=OFF)
 args+=(-DBUILD_STATIC_LIBS=ON)
 args+=(-DBUILD_TESTING=OFF)
+args+=(-DCMAKE_POLICY_VERSION_MINIMUM=3.5)
 
 args+=(-DCMAKE_IGNORE_PATH="/opt/local/include;/opt/local/lib")
+args+=(-DCMAKE_PREFIX_PATH="/opt/homebrew")
 
 if [ "$CONFIGURATION" = 'Debug' ]; then
     cxxfs+=( -g )
@@ -69,8 +71,16 @@ if [ ! -z "$CLANG_CXX_LIBRARY" ] && [ "$CLANG_CXX_LIBRARY" != 'compiler-default'
     ldfs+=(-lc++)
 fi
 
+if [ -d "/opt/homebrew/lib" ]; then
+    ldfs+=(-L/opt/homebrew/lib)
+fi
+
 if [ ! -z "$CLANG_CXX_LANGUAGE_STANDARD" ]; then
-    cxxfs+=(-std="$CLANG_CXX_LANGUAGE_STANDARD")
+    cxxstd="$CLANG_CXX_LANGUAGE_STANDARD"
+    if [ "$cxxstd" = "c++0x" ]; then
+        cxxstd="c++11"
+    fi
+    cxxfs+=(-std="$cxxstd")
 fi
 
 if [ ${#cfs[@]} -ne 0 ]; then
@@ -94,4 +104,3 @@ echo "$hash" > "$cmake_dir/.cmakehash"
 echo "$env" > "$cmake_dir/.cmakeenv"
 
 exit 0
-

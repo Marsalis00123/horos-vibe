@@ -34,13 +34,9 @@ rm -Rf "$cmake_dir.tmp" "$install_dir.tmp"
 mkdir -p "$cmake_dir"
 
 cd "$cmake_dir"
-set +e
-rsync -a --delete "$source_dir/" . 2>&1 | tee "$cmake_dir/rsync.log"
-rsync_status=${PIPESTATUS[0]}
-set -e
-if [ $rsync_status -ne 0 ]; then
-    echo "OpenSSL rsync failed with exit code $rsync_status" >&2
-    exit $rsync_status
+if ! ditto "$source_dir" "$cmake_dir"; then
+    echo "OpenSSL source copy failed" >&2
+    exit 1
 fi
 
 export CC=clang

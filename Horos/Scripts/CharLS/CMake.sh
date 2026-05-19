@@ -40,6 +40,7 @@ ldfs=($OTHER_LDFLAGS)
 
 args+=(-DBUILD_SHARED_LIBS=OFF)
 args+=(-DBUILD_TESTING=OFF)
+args+=(-DCMAKE_POLICY_VERSION_MINIMUM=3.5)
 
 args+=(-DCMAKE_OSX_DEPLOYMENT_TARGET="$MACOSX_DEPLOYMENT_TARGET")
 args+=(-DCMAKE_OSX_ARCHITECTURES="$ARCHS")
@@ -55,7 +56,11 @@ fi
 
 if [ ! -z "$CLANG_CXX_LANGUAGE_STANDARD" ]; then
 #    args+=(-DCMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD="$CLANG_CXX_LANGUAGE_STANDARD")
-    cxxfs+=(-std="$CLANG_CXX_LANGUAGE_STANDARD")
+    cxxstd="$CLANG_CXX_LANGUAGE_STANDARD"
+    if [ "$cxxstd" = "c++0x" ]; then
+        cxxstd="c++11"
+    fi
+    cxxfs+=(-std="$cxxstd")
 fi
 
 if [ ${#cxxfs[@]} -ne 0 ]; then

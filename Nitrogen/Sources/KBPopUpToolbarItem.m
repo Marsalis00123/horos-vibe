@@ -331,6 +331,8 @@ static float backgroundInset = 1.5;
 
 	if ([[self toolbar] sizeMode] == NSToolbarSizeModeSmall)
         anImage = smallImage;
+    else
+        anImage = regularImage;
 
 	[[self popupCell] setImage:anImage];
 }
