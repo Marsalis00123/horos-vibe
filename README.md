@@ -39,7 +39,12 @@ The first release is:
 
 `v4.0.1-mpr-fusion-fix.1`
 
-It contains a local, ad-hoc-signed Apple Silicon build named `Horos-patched.app`. It is intended for validation of this crash fix, not for broad distribution or notarized production use.
+It contains local, ad-hoc-signed test builds:
+
+- `Horos-patched-v4.0.1-mpr-fusion-fix.1-arm64.zip` for Apple Silicon Macs
+- `Horos-patched-v4.0.1-mpr-fusion-fix.1-x86_64.zip` for Intel Macs
+
+They are intended for validation of this crash fix, not for broad distribution or notarized production use.
 
 To test the fix:
 
@@ -90,10 +95,33 @@ env -u CC -u CXX xcodebuild \
   COMPILER_INDEX_STORE_ENABLE=NO
 ```
 
-The built app will be at:
+The built Apple Silicon app will be at:
 
 ```text
 build/Build/Products/Release/Horos.app
+```
+
+To cross-build the Intel version from Apple Silicon:
+
+```sh
+env -u CC -u CXX xcodebuild \
+  -project Horos.xcodeproj \
+  -scheme Horos \
+  -configuration Release \
+  -derivedDataPath build-x86_64 \
+  -destination 'generic/platform=macOS' \
+  ARCHS=x86_64 \
+  ONLY_ACTIVE_ARCH=NO \
+  CODE_SIGN_STYLE=Manual \
+  CODE_SIGN_IDENTITY=- \
+  DEVELOPMENT_TEAM= \
+  COMPILER_INDEX_STORE_ENABLE=NO
+```
+
+The built Intel app will be at:
+
+```text
+build-x86_64/Build/Products/Release/Horos.app
 ```
 
 ## Upstream

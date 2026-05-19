@@ -44,33 +44,9 @@ args+=(-DBUILD_TESTING=OFF)
 args+=(-DCMAKE_POLICY_VERSION_MINIMUM=3.5)
 args+=(-DCMAKE_OSX_DEPLOYMENT_TARGET="$MACOSX_DEPLOYMENT_TARGET")
 args+=(-DCMAKE_OSX_ARCHITECTURES="$ARCHS")
-args+=(-DCMAKE_PREFIX_PATH="/opt/homebrew")
-args+=(-DCMAKE_LIBRARY_PATH="/opt/homebrew/lib")
-args+=(-DCMAKE_INCLUDE_PATH="/opt/homebrew/include")
 args+=(-DITK_USE_SYSTEM_ZLIB=ON)
-args+=(-DITK_USE_SYSTEM_PNG=ON)
-args+=(-DITK_USE_SYSTEM_TIFF=ON)
-if [ -f "/opt/homebrew/opt/zlib/lib/libz.dylib" ]; then
-    args+=(-DZLIB_LIBRARY="/opt/homebrew/opt/zlib/lib/libz.dylib")
-    args+=(-DZLIB_INCLUDE_DIR="/opt/homebrew/opt/zlib/include")
-elif [ -f "/opt/homebrew/lib/libz.dylib" ]; then
-    args+=(-DZLIB_LIBRARY="/opt/homebrew/lib/libz.dylib")
-    args+=(-DZLIB_INCLUDE_DIR="/opt/homebrew/include")
-fi
-if [ -f "/opt/homebrew/opt/libpng/lib/libpng.dylib" ]; then
-    args+=(-DPNG_LIBRARY="/opt/homebrew/opt/libpng/lib/libpng.dylib")
-    args+=(-DPNG_PNG_INCLUDE_DIR="/opt/homebrew/opt/libpng/include")
-elif [ -f "/opt/homebrew/lib/libpng.dylib" ]; then
-    args+=(-DPNG_LIBRARY="/opt/homebrew/lib/libpng.dylib")
-    args+=(-DPNG_PNG_INCLUDE_DIR="/opt/homebrew/include")
-fi
-if [ -f "/opt/homebrew/opt/libtiff/lib/libtiff.dylib" ]; then
-    args+=(-DTIFF_LIBRARY="/opt/homebrew/opt/libtiff/lib/libtiff.dylib")
-    args+=(-DTIFF_INCLUDE_DIR="/opt/homebrew/opt/libtiff/include")
-elif [ -f "/opt/homebrew/lib/libtiff.dylib" ]; then
-    args+=(-DTIFF_LIBRARY="/opt/homebrew/lib/libtiff.dylib")
-    args+=(-DTIFF_INCLUDE_DIR="/opt/homebrew/include")
-fi
+args+=(-DITK_USE_SYSTEM_PNG=OFF)
+args+=(-DITK_USE_SYSTEM_TIFF=OFF)
 
 args+=(-DITK_BUILD_DEFAULT_MODULES=OFF)
 args+=(-DModule_ITKIOImageBase=ON)
@@ -91,9 +67,6 @@ args+=(-DITK_INSTALL_INCLUDE_DIR="include")
 args+=(-DCMAKE_IGNORE_PATH="/opt/local/include;/opt/local/lib")
 
 lfs+=(-L"$CONFIGURATION_TEMP_DIR/OpenJPEG.build/Install/lib")
-if [ -d "/opt/homebrew/lib" ]; then
-    lfs+=(-L/opt/homebrew/lib)
-fi
 
 if [ ! -z "$CLANG_CXX_LIBRARY" ] && [ "$CLANG_CXX_LIBRARY" != 'compiler-default' ]; then
 #    args+=(-DCMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY="$CLANG_CXX_LIBRARY")

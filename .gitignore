@@ -5,8 +5,10 @@
 *~.nib
 DerivedData/
 build/
+build-x86_64/
 dist/
 Horos-patched.app/
+Horos-patched-intel.app/
 *.pbxuser
 *.mode1v3
 *.mode2v3

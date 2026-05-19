@@ -51,21 +51,8 @@ args+=(-DCMAKE_OSX_ARCHITECTURES="$ARCHS")
 args+=(-DVTK_USE_SYSTEM_ZLIB:BOOL=ON)
 args+=(-DVTK_USE_SYSTEM_EXPAT=ON)
 args+=(-DVTK_USE_SYSTEM_LIBXML2=ON)
-args+=(-DVTK_USE_SYSTEM_PNG=ON)
-args+=(-DVTK_USE_SYSTEM_TIFF=ON)
-args+=(-DCMAKE_PREFIX_PATH="/opt/homebrew")
-args+=(-DCMAKE_LIBRARY_PATH="/opt/homebrew/lib")
-args+=(-DCMAKE_INCLUDE_PATH="/opt/homebrew/include")
-if [ -f "/opt/homebrew/opt/libtiff/lib/libtiff.dylib" ]; then
-    args+=(-DTIFF_LIBRARY="/opt/homebrew/opt/libtiff/lib/libtiff.dylib")
-    args+=(-DTIFF_INCLUDE_DIR="/opt/homebrew/opt/libtiff/include")
-elif [ -f "/opt/homebrew/lib/libtiff.dylib" ]; then
-    args+=(-DTIFF_LIBRARY="/opt/homebrew/lib/libtiff.dylib")
-    args+=(-DTIFF_INCLUDE_DIR="/opt/homebrew/include")
-fi
-if [ -d "/opt/homebrew/lib" ]; then
-    ldfs+=(-L/opt/homebrew/lib)
-fi
+args+=(-DVTK_USE_SYSTEM_PNG=OFF)
+args+=(-DVTK_USE_SYSTEM_TIFF=OFF)
 
 # args+=(-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON)
 

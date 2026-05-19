@@ -48,7 +48,7 @@ args+=(-DCMAKE_INSTALL_PREFIX="$TARGET_TEMP_DIR/Install")
 args+=(-DGROK_INSTALL_INCLUDE_DIR="include/OpenJPEG")
 args+=(-DGROK_INSTALL_LIB_DIR="lib")
 
-args+=(-DBUILD_CODEC=ON)
+args+=(-DBUILD_CODEC=OFF)
 args+=(-DBUILD_PLUGIN_LOADER=OFF)
 args+=(-DBUILD_DOC=OFF)
 args+=(-DBUILD_EXAMPLES=OFF)
@@ -58,7 +58,6 @@ args+=(-DBUILD_TESTING=OFF)
 args+=(-DCMAKE_POLICY_VERSION_MINIMUM=3.5)
 
 args+=(-DCMAKE_IGNORE_PATH="/opt/local/include;/opt/local/lib")
-args+=(-DCMAKE_PREFIX_PATH="/opt/homebrew")
 
 if [ "$CONFIGURATION" = 'Debug' ]; then
     cxxfs+=( -g )
@@ -69,10 +68,6 @@ fi
 if [ ! -z "$CLANG_CXX_LIBRARY" ] && [ "$CLANG_CXX_LIBRARY" != 'compiler-default' ]; then
     cxxfs+=(-stdlib="$CLANG_CXX_LIBRARY")
     ldfs+=(-lc++)
-fi
-
-if [ -d "/opt/homebrew/lib" ]; then
-    ldfs+=(-L/opt/homebrew/lib)
 fi
 
 if [ ! -z "$CLANG_CXX_LANGUAGE_STANDARD" ]; then
